@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BFC</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }  
+    </style>
+</head>
+<body>
+    <!-- BFC垂直方向边距重叠 -->
+   <section id="margin">
+       <style>
+           #margin{
+               background: pink;
+               overflow: hidden;
+           }
+           #margin p{
+               margin: 5px auto 25px;
+               background: red;
+           }
+       </style>
+       <p>1</p>
+       <!-- <p>2</p> -->
+       <!-- 消除上下边距重叠 给元素添加一个父元素,给父元素创建一个BFC即可消除 -->
+       <div style="overflow: hidden">
+           <p>2</p>
+       </div>
+       <p>3</p>
+   </section> 
+
+   <!-- 布局相关的BFC问题 -->
+   <section id="layout">
+       <style>
+           #layout{
+               background: red;
+           }
+           #layout .left{
+               float: left;
+               width: 100px;
+               height: 100px;
+               background: pink;
+           }
+           #layout .right{
+               background: blueviolet;
+               height: 110px;
+               /* 利用BFC消除溢出的影响,BFC不会与float进行重叠 */
+               overflow: auto;
+           }
+       </style>
+       <div class="left">左</div>
+       <div class="right">右</div>
+   </section>
+
+   <!-- BFC清除浮动 BFC子元素即使是浮动也会参与高度计算 -->
+   <section id="float">
+       <style>
+           #float{
+               background: blue;
+               /* 创建BFC */
+               /* 只要float不为none就会创建BFC */
+               /* float: left; */
+               overflow: hidden;
+           }
+           .floatLeft{
+               float: left;
+           }
+       </style>
+       <div class="floatLeft">
+           bfc清除浮动
+       </div>
+   </section>
+
+</body>
+</html>

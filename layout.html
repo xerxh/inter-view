@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>layout</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .layout article div{ 
+            min-height: 200px;
+        }
+        /* 浮动 */
+        .layout .left{
+            float: left;
+            width: 300px;
+            background: red;
+        }
+        .layout .right{
+            float: right;
+            width: 300px;
+            background: blue;
+        }
+        .layout .center{
+            background: yellow;
+        }
+    </style>
+</head>
+<body>
+    <section class="layout float">
+        <article>
+            <div class="left"></div>
+            <div class="right"></div>
+            <div class="center">
+                这是自适应中间部分
+            </div>
+        </article>
+    </section>
+    <style>
+        .grid > article{
+            display: grid;
+            width: 100%;
+            grid-template-rows: 100px;
+            grid-template-columns: 300px auto 300px;
+        }
+        .grid-left{
+            background: red;
+        }
+        .grid-right{
+            background: blue;
+        }
+        .grid-center{
+            background: yellow;
+        }
+    </style>
+    <section class="grid">
+        <article>
+            <div class="grid-left"></div>
+            <div class="grid-center">
+                这是grid自适应中间部分
+            </div>
+            <div class="grid-right"></div>
+        </article>
+    </section>
+</body>
+</html>
