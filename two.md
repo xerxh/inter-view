@@ -745,3 +745,118 @@ window.addEventListener('error', function (e) {
         3. 上报错误的基本原理
             1. 采用AJAX通信方式上报
             2. 使用Image标签进行上报
+###### MVVM框架
+    1. 了解MVVM框架吗？
+        比较了解Vue.js
+    2. 谈谈对MVVM的认识
+        MVVM框架是在MVC的基础上衍生而来的,MVVC框架由 View ViewModel Model组成 View 和 Model 通过 ViewModel 双向数据绑定连接数据和视图
+        MVVM与MVC最大的区别就是：它实现了View和Model的自动同步，也就是当Model的属性改变时，我们不用再自己手动操作Dom元素，来改变View的显示，而是改变属性后该属性对应View层显示会自动改变
+    3. 双向数据绑定是什么原理,可以写出来吗？
+        view -> 数据 表单的 onChange 事件
+        数据 ->  view 数据的 Object.defineProperty() Set Get 方法
+        Object.defineProperty 返回修改后的新的对象
+        reflect.defineProperty 返回布尔值 ES6新的写法
+    4. 使用了什么设计模式
+        观察者订阅模式
+    5. 生命周期是什么？
+        beforeCreate created
+        beforeMount  mounted
+        beforeUpdate updated
+        beforeDestory destoryed
+    6. 有看过源码吗？
+```
+new Vue({
+    el: '#app',
+    data: {
+        title: 'vue code',
+        name: 'xhxer512'
+    },
+    methods: {
+        clickMe: function () {
+            this.title = 'vue code click'
+        }
+    },
+    mounted: function() {
+        window.setTimeout(() => {
+            this.title = 'time 1000'
+        }, 1000)
+    }
+})
+
+// 在new Vue时 
+// 会根据data先进行代理然后observe实现对data的监听 get 进行订阅添加将water实例push到dep列表中  set 根据通知触发对应函数发生Dom更新
+// 根据el对整个html模版进行编译生成虚拟dom树
+// 将虚拟Dom树和数据结合编译通过识别v-model等指令 生成watcher实例(后续可以自动从数据更新到视图) 同时生成dom树
+// 进行绘制挂载在页面上
+```
+###### 职业规划
+    1. 目标是什么？
+        在业务上成为专家,在技术上成为行业大牛
+    2. 近期目标
+        不断的学习积累各方面的经验,以学习为主
+    3. 长期目标
+        做几件有价值的事情,如开源作品,技术框架等
+    4. 方式方法
+        先完成业务上的主要问题,做到极致,然后向目标靠拢
+###### vuex
+    1. vuex有五种属性 state Getter Mutation Action Module
+        state: 我们在state中定义我们需要管理的数据
+        getter: 当我们需要从store的state中派生出一些状态时,就需要使用getter,getter会获取state作为第一个参数,而且getter的返回值会根据它的依赖被缓存起来,只有getter中依赖的state中的值发生改变时才会重新计算
+        mutation: 更新store状态的唯一方法是提交mutation,每个mutation都有一个字符串类型的事件类型和回调函数,我们需要改变state的值就要在回调函数中进行改变,我们要执行这个回调函数就需要执行一个对应的调用方法:store.commit
+        action: action可以提交mutation,在action中可以执行store.commit,而且action中可以有任何的异步操作。在页面中如果我们要使用这个action,则需要执行store.dispath
+        module: module解决了当state很多很臃肿时,使用模块module将store分割成多个模块,每个模块都有自己state,action,mutation和getter
+    2. vuex的state特性
+        vuex就是一个仓库,其中state就是数据的存放位置,对应于vue的data
+        state中存放的数据是响应式的,vue组件从store中读取数据,若是store中的数据发生改变,依赖这个数据的组件也会发生变化
+        vuex通过mpState把全局的state 和 getter 映射到组件的 computed 计算属性中
+    3. vuex中getter的特性
+        getter可以对state进行计算操作,它是store的计算属性
+        getter可以在多个组件中进行复用
+    4. vuex的mutation特性
+        action 类似于 mutation
+        不同点：
+            action 提交的是 mutation,而不是像mutation直接通过state进行状态修改
+            action 可以包含任意步的异步操作
+    5. vue.js中的ajax请求应该写在组件的methods中还是vuex的action中
+        如果请求来的数据不是要被其他组件公用,仅仅使用在请求的组件中
+        如果被其他组件所复用,将请求放在action中方便复用
+    6. 不用vuex会有的问题
+        可维护性会下降,如果一个数据在多处使用,想修改数据需要多处修改
+        可读性能变差,一个组件中的数据太多,无法追踪数据来源和流向
+        增加了组件之间的耦合性,大量的上传派发会加大组件之间的耦合性
+        如果有多个兄弟之间组件需要进行传值，可以减少项目的复杂度
+###### vueRouter
+    当使用路由参数时,例如从/content?id=1 -> content?id=2,此时原来的组件实例将会被复用,组件的生命周期函数不会发生调用，数据也就不会发生变化,这时候vue该怎么响应路由参数的变化呢？
+```
+// 复用组件时,想对路由参数的变化进行响应的话 可以用watch监听$route对象的变化
+watch: {
+    $route (to, from) {
+        // 对路由变化作出响应
+    }
+}
+// 或者使用beforeRouteUpdate钩子函数
+```
+    完整的vue-router 导航解析
+        1. 导航触发
+        2. 在失活的组件中调用 beforeRouteLeave(to,from,next) 在切换页面离开组件时调用
+        3. 调用全局的 路由前置守卫beforeEach
+        4. 在复用的组件中调用 beforeRouteUpdate(2.2) 一个组件有二级导航的时候，点击二级导航的时候导航路径更新了，会触发路由钩子函数beforeRouteUpdate。
+        5. 在路由配置中调用beforeEnter(路由独享钩子)
+        6. 解析异步路由组件
+        7. 在被激活的组件中调用 beforeRouteEnter
+        8. 调用全局的beforeResole(2.5)
+        9. 导航被确认
+        10. 调用全局的afterEach钩子
+        11. 触发Dom更新
+        12. 用创建好的实例调用beforeRouteEnter传给next函数
+    vue-router的导航钩子
+        1. 全局守卫        router.beforeEach
+        2. 全局解析守卫     router.beforeResolve
+        3. 全局后置钩子     router.afterEach
+        4. 路由独享钩子     beforeEnter
+        5.组件内的守卫      beforeRouteEnter,beforeRouteUpdate,beforeRouteleave
+        导航表示路由正在发生变化,vue-router提供的导航守卫主要用来,进行跳转或者取消的方式守卫路由,提供多种植入机会在导航过程中从而可以对导航进行控制
+###### 组件间传值
+    父子通信  属性绑定的方式  子组件通过props获取传递的属性
+    子父通信  事件派发的方式  在父组件中定义函数并监听函数 子组件通过emit模拟触发事件的同时可以进行参数传递
+    兄弟通信  通过一个vue实例作为中间件bus 在需要通信的组件中分别引入bus 兄弟之间通过调用bus的on监听函数和emit触发来进行通信
